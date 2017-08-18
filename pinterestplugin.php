@@ -247,12 +247,12 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                     }
                 }
                 // Check pinterest hashtags...
-                $igsearch = $this->get_config(self::CONFIG_PRSEARCH);
-                if (trim($igsearch) === "") {
-                    $notifications[] = get_string('search_empty', 'msocialconnector_pinterest', ['cmid' => $cm->id]);
-                } else {
-                    $messages[] = get_string('searchingby', 'msocialconnector_pinterest', $igsearch);
-                }
+//                 $igsearch = $this->get_config(self::CONFIG_PRSEARCH);
+//                 if (trim($igsearch) === "") {
+//                     $notifications[] = get_string('search_empty', 'msocialconnector_pinterest', ['cmid' => $cm->id]);
+//                 } else {
+//                     $messages[] = get_string('searchingby', 'msocialconnector_pinterest', $igsearch);
+//                 }
             }
             // Check user's social credentials.
             $socialuserids = $this->get_social_userid($USER);
@@ -274,6 +274,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         global $USER, $COURSE;
         $course = $COURSE;
         $usermessage = '';
+        // xdebug_break();
         $socialids = $this->get_social_userid($user);
         $cm = get_coursemodule_from_instance('msocial', $this->msocial->id);
         if ($socialids == null) { // Offer to register.
@@ -384,7 +385,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         if (!isset($token->ismaster)) {
             $token->ismaster = 1;
         }
-        $record = $DB->get_record('msocial_pinterest_tokens', array("msocial" => $this->msocial->id));
+        $record = $DB->get_record('msocial_pinterest_tokens', array("msocial" => $this->msocial->id, 'user' => $token->user));
         if ($record) {
             $token->id = $record->id;
             $DB->update_record('msocial_pinterest_tokens', $token);
@@ -651,18 +652,17 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                     }
                     $otherpage = $pinscoll->hasNextPage();
                     if ($otherpage) {
-                        $pinscoll = $pr->pins->fromBoard($boardid,
-                                ['fields' => 'id,link,note,url,board,counts,created_at,creator,media,metadata,original_link',
-                                                'cursor' => $pinscoll->pagination->cursor]);
+                        $response = $pr->request->execute('GET', $pinscoll->pagination['next']);
+
+                        $pinscoll = new Collection($pr, $response, "Pin");;
                     }
-                } while ($otherpage);
+                } while ($otherpage && count($pinscoll->all()) > 0);
             }
         } catch (\Exception $e) {
             $cm = $this->cm;
             $msocial = $this->msocial;
-
             $errormessage = "For module msocial\\connection\\pinterest: $msocial->name (id=$cm->instance) in course (id=$msocial->course) " .
-                     "searching term: $igsearch  ERROR:" . $e->getMessage();
+            " ERROR:" . $e->getMessage() . " Response headers were: " . http_build_query($pr->request->getHeaders(),'',', ');
             $result->messages[] = $errormessage;
             $result->errors[] = (object) ['message' => $errormessage];
         }

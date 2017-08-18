@@ -206,11 +206,14 @@ class Request {
                 break;
             default:
                 $ch->setOption(CURLOPT_CUSTOMREQUEST, "GET");
+                $ch->setOption(CURLOPT_VERBOSE, 1);
                 break;
         }
 
         // Execute request and catch response
         $response_data = $ch->execute();
+        // Get headers from last request
+        $this->headers = $ch->getHeaders();
 
         if ($response_data === false && !$ch->hasErrors()) {
             throw new CurlException("Error: Curl request failed");
@@ -227,8 +230,6 @@ class Request {
             throw new PinterestException('Pinterest error (code: ' . $response->getResponseCode() . ') with message: ' . $response->getMessage(), $response->getResponseCode());
         }
 
-        // Get headers from last request
-        $this->headers = $ch->getHeaders();
 
         // Close curl resource
         $ch->close();
