@@ -72,8 +72,8 @@ if ($action == 'connect') {
         if (!isset($data->access_token)) {
             $message .= $data->message;
         } else if (isset($data->access_token)) {
-            $access_token = $data->access_token;
-            $pr->auth->setOAuthToken($access_token);
+            $accesstoken = $data->access_token;
+            $pr->auth->setOAuthToken($accesstoken);
             $userme = $pr->users->me(['fields' => 'first_name,id,last_name,url,username']);
             $username = $userme->username;
             // Save tokens for future use.
@@ -81,6 +81,7 @@ if ($action == 'connect') {
                 $record = new stdClass();
                 $record->token = $data->access_token;
                 $record->username = $username;
+                $record->user = $USER->id;
                 $plugin->set_connection_token($record);
                 $message = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username);
                 // Fill the profile with username in pinterest.
