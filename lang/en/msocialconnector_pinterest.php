@@ -29,7 +29,7 @@
  */
 $string['pluginname'] = 'Pinterest Connector';
 $string['search'] = 'String to search for in Pinterest Tags';
-$string['search_empty'] = 'Search term absent. Configure it in this activity settings.';
+$string['search_empty'] = 'Search term absent. Configure it in this activity <a href="../../course/modedit.php?update={$a->cmid}&return=1">settings</a>.';
 $string['search_help'] = 'If specified, only media published with the specific tag is collected for analysis.';
 $string['searchingby'] = 'Searching for tag: "{$a}"';
 $string['harvest'] = 'Search Pinterest groups for student activity';

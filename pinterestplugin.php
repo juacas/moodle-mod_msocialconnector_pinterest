@@ -249,7 +249,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                 // Check pinterest hashtags...
                 $igsearch = $this->get_config(self::CONFIG_PRSEARCH);
                 if (trim($igsearch) === "") {
-                    $notifications[] = get_string('search_empty', 'msocialconnector_pinterest');
+                    $notifications[] = get_string('search_empty', 'msocialconnector_pinterest', ['cmid' => $cm->id]);
                 } else {
                     $messages[] = get_string('searchingby', 'msocialconnector_pinterest', $igsearch);
                 }
