@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/msocial/connector/pinterest/db" VERSION="20150612" COMMENT="XMLDB file for Moodle mod/msocial/connector/pinterest"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="msocial_pinterest_tokens" COMMENT="pinterest access tokens">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="msocial" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="token" TYPE="char" LENGTH="200" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ismaster" TYPE="int" LENGTH="1" NOTNULL="true" default="0" SEQUENCE="false"/>
+        <FIELD NAME="user" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" comment="Local user token for accessing by user to the api"/>
+        <FIELD NAME="username" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="errorstatus" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="msocial_id" TYPE="unique" FIELDS="msocial,user"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

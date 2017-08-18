@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<libraries>
+ <library>
+    <location>vendor/dirkgroenen</location>
+    <name>Pinterest-API-PHP</name>
+    <license>Apache</license>
+    <version>2.2</version>
+    <licenseversion>2.0</licenseversion>
+<!--     https://github.com/dirkgroenen/Pinterest-API-PHP  -->
+  </library>
+</libraries>
