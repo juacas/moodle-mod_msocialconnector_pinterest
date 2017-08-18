@@ -81,6 +81,7 @@ if ($action == 'connect') {
                 $record = new stdClass();
                 $record->token = $data->access_token;
                 $record->username = $username;
+                $record->user = $USER->id;
                 $plugin->set_connection_token($record);
                 $message = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username);
                 // Fill the profile with username in pinterest.
