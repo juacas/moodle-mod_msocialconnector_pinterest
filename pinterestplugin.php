@@ -457,7 +457,9 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         $minwords = $this->get_config(self::CONFIG_MIN_WORDS);
         return ($numwords <= ($minwords == null ? 2 : $minwords));
     }
-
+    public function preferred_harvest_intervals() {
+        return new harvest_intervals( 12 * 3600, 0, 0, 0);
+    }
     /** pinterest content are grouped by tag.
      * Searching by tag may need special permissions from pinterest
      * API sandbox mode allows to gather personal medias by user. Will need to store individual
@@ -476,8 +478,8 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
 
     public function harvest_users() {
         global $DB;
-        require_once ('pinterest-sdk/pinterestException.php');
-        require_once ('pinterest-sdk/pinterest.php');
+        require_once('pinterest-sdk/pinterestException.php');
+        require_once('pinterest-sdk/pinterest.php');
         $errormessage = null;
         $result = new \stdClass();
         $result->messages = [];
@@ -494,6 +496,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         $ig = new \MetzWeb\pinterest\pinterest($config);
         // Get mapped users.
         $igusers = $DB->get_records('msocial_pinterest_tokens', ['msocial' => $this->msocial->id]);
+        print_error('Mode not implemented!!!'); // TODO implement harvest by user in pinterest.
         foreach ($igusers as $token) {
             try {
                 $ig->setAccessToken($token->token);
@@ -604,7 +607,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
 
     private function harvest_boards() {
         global $DB;
-        require_once ('vendor/autoload.php');
+        require_once('vendor/autoload.php');
         $errormessage = null;
         $result = new \stdClass();
         $result->messages = [];

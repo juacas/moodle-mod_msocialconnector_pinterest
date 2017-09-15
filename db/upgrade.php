@@ -49,7 +49,7 @@ function xmldb_msocialconnector_pinterest_upgrade($oldversion = 0) {
     global $CFG;
 
     if ($oldversion < 2017081700) {
-        require_once ($CFG->dirroot . '/mod/msocial/connector/pinterest/pinterestplugin.php');
+        require_once($CFG->dirroot . '/mod/msocial/connector/pinterest/pinterestplugin.php');
         $plugininfo = new mod_msocial\connector\msocial_connector_pinterest(null);
         $plugininfo->create_pki_fields();
         // pinterest savepoint reached.

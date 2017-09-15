@@ -40,7 +40,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 function xmldb_msocialconnector_pinterest_install() {
     global $CFG, $DB;
-    require_once ($CFG->dirroot . '/mod/msocial/connector/pinterest/pinterestplugin.php');
+    require_once($CFG->dirroot . '/mod/msocial/connector/pinterest/pinterestplugin.php');
     $plugin = new mod_msocial\connector\msocial_connector_pinterest(null);
     $plugin->create_pki_fields();
     return true;
