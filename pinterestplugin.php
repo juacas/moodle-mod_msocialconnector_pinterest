@@ -219,33 +219,34 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                 } else { // MODE_USER.
                     $messages[] = get_string('module_connected_pinterest_usermode', 'msocialconnector_pinterest') . $harvestbutton;
                 }
-                if ($this->get_connection_token()) {
-                    // Check pisterest boards...
-                    $boards = $this->get_config(self::CONFIG_PRBOARD);
-                    if (trim($boards) === "") {
-                        $action = '';
-                        if (has_capability('mod/msocial:manage', $context)) {
-                            $action = $OUTPUT->action_link(
-                                    new \moodle_url('/mod/msocial/connector/pinterest/boardchoice.php',
-                                            array('id' => $id, 'action' => 'selectboard')), "Select board");
-                        }
-                        $notifications[] = get_string('prboard', 'msocialconnector_pinterest') . " : " . $action;
-                    } else {
-                        $boardnames = json_decode($this->get_config(self::CONFIG_PRBOARDNAME));
-                        $boardinfo = [];
-                        foreach ($boardnames as $board) {
-                            $boardinfo[] = \html_writer::link($board->url, $board->name);
-                        }
-                        $action = '';
-                        if (has_capability('mod/msocial:manage', $context)) {
-                            $action = $OUTPUT->action_link(
-                                    new \moodle_url('/mod/msocial/connector/pinterest/boardchoice.php',
-                                            array('id' => $id, 'action' => 'selectboard')), "Change boards");
-                        }
-                        $messages[] = get_string('prboard', 'msocialconnector_pinterest') . ': "' . implode(', ', $boardinfo) . '" ' .
-                                 $action;
+            }
+            if ($this->get_connection_token()) {
+                // Check pisterest boards...
+                $boards = $this->get_config(self::CONFIG_PRBOARD);
+                if (trim($boards) === "") {
+                    $action = '';
+                    if (has_capability('mod/msocial:manage', $context)) {
+                        $action = ' : ' . $OUTPUT->action_link(
+                                new \moodle_url('/mod/msocial/connector/pinterest/boardchoice.php',
+                                        array('id' => $id, 'action' => 'selectboard')), "Select board");
                     }
+                    $notifications[] = get_string('prboard', 'msocialconnector_pinterest') . $action;
+                } else {
+                    $boardnames = json_decode($this->get_config(self::CONFIG_PRBOARDNAME));
+                    $boardinfo = [];
+                    foreach ($boardnames as $board) {
+                        $boardinfo[] = \html_writer::link($board->url, $board->name);
+                    }
+                    $action = '';
+                    if (has_capability('mod/msocial:manage', $context)) {
+                        $action = $OUTPUT->action_link(
+                                new \moodle_url('/mod/msocial/connector/pinterest/boardchoice.php',
+                                        array('id' => $id, 'action' => 'selectboard')), "Change boards");
+                    }
+                    $messages[] = get_string('prboard', 'msocialconnector_pinterest') . ': "' . implode(', ', $boardinfo) . '" ' .
+                             $action;
                 }
+            }
                 // Check pinterest hashtags...
 //                 $igsearch = $this->get_config(self::CONFIG_PRSEARCH);
 //                 if (trim($igsearch) === "") {
@@ -253,7 +254,6 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
 //                 } else {
 //                     $messages[] = get_string('searchingby', 'msocialconnector_pinterest', $igsearch);
 //                 }
-            }
             // Check user's social credentials.
             $socialuserids = $this->get_social_userid($USER);
             if (!$socialuserids) { // Offer to register.
