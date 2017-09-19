@@ -180,20 +180,14 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      * @global \moodle_database $DB */
     public function render_header() {
         global $OUTPUT, $DB, $USER;
+        $notifications = [];
+        $messages = [];
         if ($this->is_enabled()) {
-            $notifications = [];
-            $messages = [];
             $context = \context_module::instance($this->cm->id);
             list($course, $cm) = get_course_and_cm_from_instance($this->msocial->id, 'msocial');
             $id = $cm->id;
             if (has_capability('mod/msocial:manage', $context)) {
-                if ($this->is_tracking()) {
-                    $harvestbutton = $OUTPUT->action_icon(
-                            new \moodle_url('/mod/msocial/harvest.php', ['id' => $id, 'subtype' => $this->get_subtype()]),
-                            new \pix_icon('a/refresh', get_string('harvest', 'msocialconnector_pinterest')));
-                } else {
-                    $harvestbutton = '';
-                }
+
                 if ($this->mode == self::MODE_BOARD) {
                     $token = $this->get_connection_token();
                     $urlconnect = new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
@@ -210,14 +204,14 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                                 new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
                                         array('id' => $id, 'action' => 'connect')), "Change user") . '/' . $OUTPUT->action_link(
                                 new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
-                                        array('id' => $id, 'action' => 'disconnect')), "Disconnect") . ' ' . $harvestbutton;
+                                        array('id' => $id, 'action' => 'disconnect')), "Disconnect") . ' ';
                     } else {
                         $notifications[] = get_string('module_not_connected_pinterest', 'msocialconnector_pinterest') . $OUTPUT->action_link(
                                 new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
                                         array('id' => $id, 'action' => 'connect')), "Connect");
                     }
                 } else { // MODE_USER.
-                    $messages[] = get_string('module_connected_pinterest_usermode', 'msocialconnector_pinterest') . $harvestbutton;
+                    $messages[] = get_string('module_connected_pinterest_usermode', 'msocialconnector_pinterest');
                 }
             }
             if ($this->get_connection_token()) {
@@ -259,11 +253,21 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             if (!$socialuserids) { // Offer to register.
                 $notifications[] = $this->render_user_linking($USER);
             }
-            $this->notify($notifications, self::NOTIFY_WARNING);
-            $this->notify($messages, self::NOTIFY_NORMAL);
         }
+        return [$messages, $notifications];
     }
-
+    public function render_harvest_link() {
+        global $OUTPUT;
+        $harvestbutton = '';
+        $id = $this->cm->id;
+        $context = \context_module::instance($id);
+        if (has_capability('mod/msocial:manage', $context) && $this->is_tracking()) {
+            $harvestbutton = $OUTPUT->action_icon(
+                    new \moodle_url('/mod/msocial/harvest.php', ['id' => $id, 'subtype' => $this->get_subtype()]),
+                    new \pix_icon('a/refresh', get_string('harvest', 'msocialconnector_pinterest')));
+        }
+        return $harvestbutton;
+    }
     /** Place social-network user information or a link to connect.
      *
      * @global object $USER
@@ -457,6 +461,11 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         $minwords = $this->get_config(self::CONFIG_MIN_WORDS);
         return ($numwords <= ($minwords == null ? 2 : $minwords));
     }
+    /**
+     *
+     * {@inheritDoc}
+     * @see \msocial\msocial_plugin::preferred_harvest_intervals()
+     */
     public function preferred_harvest_intervals() {
         return new harvest_intervals( 12 * 3600, 0, 0, 0);
     }
