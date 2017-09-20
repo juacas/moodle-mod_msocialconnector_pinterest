@@ -61,7 +61,7 @@ if ($action == 'selectboard') {
 
     $selectedboards = $plugin->get_config(msocial_connector_pinterest::CONFIG_PRBOARD);
     if ($selectedboards) {
-        $selectedboards = explode(',', $boards);
+        $selectedboards = explode(',', $selectedboards);
     } else {
         $selectedboards = [];
     }
@@ -85,7 +85,7 @@ if ($action == 'selectboard') {
             $boardimg = $board->image['60x60'];
             $info = \html_writer::img($boardimg['url'], $board->name) . $board->name;
             $linkinfo = \html_writer::link($boardurl, $info);
-            $selected = array_search($boardid, $selectedboards) !== false;
+            $selected = array_search($board->id, $selectedboards) !== false;
             $checkbox = \html_writer::checkbox('board[]', $boardid, $selected, $linkinfo);
             $row->cells = [$checkbox, $board->description];
             $table->data[] = $row;
@@ -117,6 +117,8 @@ if ($action == 'selectboard') {
     }
     $plugin->set_config(msocial_connector_pinterest::CONFIG_PRBOARD, implode(',', $boardids));
     $plugin->set_config(msocial_connector_pinterest::CONFIG_PRBOARDNAME, json_encode($boardnames));
+    $boardlinks = $plugin->render_board_links();
+    echo get_string('prboard', 'msocialconnector_pinterest') . ': "' . implode(', ', $boardlinks);
     echo $OUTPUT->continue_button(new moodle_url('/mod/msocial/view.php', array('id' => $id)));
 } else {
     print_error("Bad action code");

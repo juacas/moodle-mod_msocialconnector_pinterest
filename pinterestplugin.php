@@ -226,18 +226,14 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                     }
                     $notifications[] = get_string('prboard', 'msocialconnector_pinterest') . $action;
                 } else {
-                    $boardnames = json_decode($this->get_config(self::CONFIG_PRBOARDNAME));
-                    $boardinfo = [];
-                    foreach ($boardnames as $board) {
-                        $boardinfo[] = \html_writer::link($board->url, $board->name);
-                    }
+                    $boardlinks = $this->render_board_links();
                     $action = '';
                     if (has_capability('mod/msocial:manage', $context)) {
                         $action = $OUTPUT->action_link(
                                 new \moodle_url('/mod/msocial/connector/pinterest/boardchoice.php',
                                         array('id' => $id, 'action' => 'selectboard')), "Change boards");
                     }
-                    $messages[] = get_string('prboard', 'msocialconnector_pinterest') . ': "' . implode(', ', $boardinfo) . '" ' .
+                    $messages[] = get_string('prboard', 'msocialconnector_pinterest') . ': "' . implode(', ', $boardlinks) . '" ' .
                              $action;
                 }
             }
@@ -255,6 +251,14 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             }
         }
         return [$messages, $notifications];
+    }
+    public function render_board_links() {
+        $boardnames = json_decode($this->get_config(self::CONFIG_PRBOARDNAME));
+        $boardinfo = [];
+        foreach ($boardnames as $board) {
+            $boardinfo[] = \html_writer::link($board->url, $board->name);
+        }
+        return $boardinfo;
     }
     public function render_harvest_link() {
         global $OUTPUT;
