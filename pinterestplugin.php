@@ -190,7 +190,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
 
                 if ($this->mode == self::MODE_BOARD) {
                     $token = $this->get_connection_token();
-                    $urlconnect = new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
+                    $urlconnect = new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
                             array('id' => $id, 'action' => 'connect'));
                     if ($token) {
                         $username = $token->username;
@@ -201,13 +201,13 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                         }
 
                         $messages[] = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username) . $OUTPUT->action_link(
-                                new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
+                                new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
                                         array('id' => $id, 'action' => 'connect')), "Change user") . '/' . $OUTPUT->action_link(
-                                new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
+                                new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
                                         array('id' => $id, 'action' => 'disconnect')), "Disconnect") . ' ';
                     } else {
                         $notifications[] = get_string('module_not_connected_pinterest', 'msocialconnector_pinterest') . $OUTPUT->action_link(
-                                new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
+                                new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
                                         array('id' => $id, 'action' => 'connect')), "Connect");
                     }
                 } else { // MODE_USER.
@@ -466,7 +466,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         $appid = $this->get_appid();
         $appsecret = $this->get_appsecret();
         $this->lastinteractions = [];
-        $callbackurl = new \moodle_url("/mod/msocial/connector/pinterest/pinterestSSO.php",
+        $callbackurl = new \moodle_url("/mod/msocial/connector/pinterest/connectorSSO.php",
                 array('id' => $this->cm->id, 'action' => 'callback', 'type' => 'profile'));
         $config = array('apiKey' => $appid, 'apiSecret' => $appsecret, 'apiCallback' => $callbackurl->out(false));
         $igsearch = $this->get_config(self::CONFIG_PRSEARCH);

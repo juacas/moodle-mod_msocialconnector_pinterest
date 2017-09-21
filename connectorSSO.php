@@ -46,7 +46,7 @@ $context = context_module::instance($id);
 $msocial = $DB->get_record('msocial', array('id' => $cm->instance), '*', MUST_EXIST);
 $plugin = new msocial_connector_pinterest($msocial);
 
-$thispageurl = new moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
+$thispageurl = new moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
         array('id' => $id, 'action' => $action, 'type' => $type));
 
 $appid = get_config("msocialconnector_pinterest", "appid");
@@ -56,7 +56,7 @@ $pr = new \DirkGroenen\Pinterest\Pinterest($appid, $appsecret);
 
 if ($action == 'connect') {
     // GetToken.
-    $callbackurl = (new moodle_url("/mod/msocial/connector/pinterest/pinterestSSO.php",
+    $callbackurl = (new moodle_url("/mod/msocial/connector/pinterest/connectorSSO.php",
             array('action' => 'callback', 'type' => $type)))->out();
     // Store redirection params in session. Pinterest does not support params in callbackurl.
     session_start();
@@ -117,7 +117,7 @@ if ($action == 'connect') {
     if ($type == 'profile') {
         $userid = required_param('userid', PARAM_INT);
         $socialid = required_param('socialid', PARAM_RAW_TRIMMED);
-        if ($userid !== $USER->id) {
+        if ($userid != $USER->id) {
             require_capability('mod/msocial:manage', $context);
         }
         $user = (object) ['id' => $userid];
