@@ -247,7 +247,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             // Check user's social credentials.
             $socialuserids = $this->get_social_userid($USER);
             if (!$socialuserids) { // Offer to register.
-                $notifications[] = $this->render_user_linking($USER);
+                $notifications[] = $this->render_user_linking($USER, false, true);
             }
         }
         return [$messages, $notifications];
@@ -278,42 +278,6 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      * @global object $COURSE
      * @param object $user user record
      * @return string message with the linking info of the user */
-    public function render_user_linking($user) {
-        global $USER, $COURSE;
-        $course = $COURSE;
-        $usermessage = '';
-        // xdebug_break();
-        $socialids = $this->get_social_userid($user);
-        $cm = get_coursemodule_from_instance('msocial', $this->msocial->id);
-        if ($socialids == null) { // Offer to register.
-            $pixurl = new \moodle_url('/mod/msocial/connector/pinterest/pix');
-            $userfullname = fullname($user);
-            if ($USER->id == $user->id) {
-                $urlprofile = new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
-                        array('id' => $cm->id, 'action' => 'connect', 'type' => 'profile'));
-                $usermessage = get_string('no_pinterest_name_advice2', 'msocialconnector_pinterest',
-                        ['userfullname' => $userfullname, 'userid' => $USER->id, 'courseid' => $course->id,
-                                        'url' => $urlprofile->out(false), 'pixurl' => $pixurl->out(false)]);
-            } else {
-                $usermessage = get_string('no_pinterest_name_advice', 'msocialconnector_pinterest',
-                        ['userfullname' => $userfullname, 'userid' => $user->id, 'courseid' => $course->id,
-                                        'pixurl' => $pixurl->out()]);
-            }
-        } else {
-            global $OUTPUT;
-            $usermessage = $this->create_user_link($user);
-            $contextmodule = \context_module::instance($this->cm->id);
-            if ($USER->id == $user->id || has_capability('mod/msocial:manage', $contextmodule)) {
-                $icon = new \pix_icon('t/delete', 'delete');
-                $urlprofile = new \moodle_url('/mod/msocial/connector/pinterest/pinterestSSO.php',
-                        array('id' => $this->cm->id, 'action' => 'disconnect', 'type' => 'profile', 'userid' => $user->id,
-                                        'socialid' => $socialids->socialid));
-                $link = \html_writer::link($urlprofile, $OUTPUT->render($icon));
-                $usermessage .= $link;
-            }
-        }
-        return $usermessage;
-    }
 
     public function get_social_user_url(social_user $userid) {
         return "https://www.pinterest.com/$userid->socialname";
