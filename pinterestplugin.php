@@ -303,13 +303,13 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      *
      * @see \msocial\msocial_plugin::get_pki_list() */
     public function get_pki_list() {
-        $pkiobjs['prpins'] = new pki_info('prpins', null, pki_info::PKI_INDIVIDUAL, social_interaction::POST, '*',
+        $pkiobjs['prpins'] = new pki_info('prpins', null, pki_info::PKI_INDIVIDUAL, pki_info::PKI_CALCULATED, social_interaction::POST, '*',
                 social_interaction::DIRECTION_AUTHOR);
-        $pkiobjs['prcomments'] = new pki_info('prcomments', null, pki_info::PKI_CUSTOM, social_interaction::REPLY);
-        $pkiobjs['saves'] = new pki_info('saves', null, pki_info::PKI_CUSTOM, social_interaction::REACTION);
+        $pkiobjs['prcomments'] = new pki_info('prcomments', null, pki_info::PKI_INDIVIDUAL, pki_info::PKI_CUSTOM, social_interaction::REPLY);
+        $pkiobjs['saves'] = new pki_info('saves', null, pki_info::PKI_INDIVIDUAL, pki_info::PKI_CUSTOM, social_interaction::REACTION);
         $pkiobjs['max_prpins'] = new pki_info('max_prpins', null, pki_info::PKI_AGREGATED);
-        $pkiobjs['max_prcomments'] = new pki_info('max_prcomments', null, pki_info::PKI_CUSTOM);
-        $pkiobjs['max_saves'] = new pki_info('max_saves', null, pki_info::PKI_CUSTOM);
+        $pkiobjs['max_prcomments'] = new pki_info('max_prcomments', null, pki_info::PKI_AGREGATED, pki_info::PKI_CUSTOM);
+        $pkiobjs['max_saves'] = new pki_info('max_saves', null, pki_info::PKI_AGREGATED, pki_info::PKI_CUSTOM);
         return $pkiobjs;
     }
 
@@ -455,6 +455,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
 
     public function harvest_users() {
         global $DB;
+        print_error('Mode not implemented!!!'); // TODO implement harvest by user in pinterest.
         require_once('pinterest-sdk/pinterestException.php');
         require_once('pinterest-sdk/pinterest.php');
         $errormessage = null;
@@ -473,14 +474,13 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         $ig = new \MetzWeb\pinterest\pinterest($config);
         // Get mapped users.
         $igusers = $DB->get_records('msocial_pinterest_tokens', ['msocial' => $this->msocial->id]);
-        print_error('Mode not implemented!!!'); // TODO implement harvest by user in pinterest.
         foreach ($igusers as $token) {
             try {
                 $ig->setAccessToken($token->token);
                 // Query pinterest...
                 $lastharvest = $this->get_config(self::LAST_HARVEST_TIME);
-                $this->igcomments[$token->user] = 0;
-                $this->iglikes[$token->user] = 0;
+                $this->comments[$token->user] = 0;
+                $this->saves[$token->user] = 0;
                 $media = $ig->getUserMedia();
                 if ($media->meta->code != 200) { // Error.
                     throw new \Exception($media->meta->error_message);
@@ -647,27 +647,6 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             $result->errors[] = (object) ['message' => $errormessage];
         }
 
-        // TODO: define if processsing is needed or not.
-        $processedinteractions = $this->lastinteractions; // $this->process_interactions($this->lastinteractions);
-
-        $studentinteractions = array_filter($processedinteractions,
-                function ($interaction) {
-                    return isset($interaction->fromid) || isset($interaction->toid);
-                });
-        // TODO: define if all interactions are
-        // worth to be registered or only student's.
-        $this->store_interactions($processedinteractions);
-        $contextcourse = \context_course::instance($this->msocial->course);
-        list($students, $nonstudents, $active, $users) = msocial_get_users_by_type($contextcourse);
-        $pkis = $this->calculate_pkis($users);
-        $this->store_pkis($pkis, true);
-        $this->set_config(\mod_msocial\connector\msocial_connector_plugin::LAST_HARVEST_TIME, time());
-
-        $logmessage = "For module msocial\\connection\\pinterest: \"" . $this->msocial->name . "\" (id=" . $this->msocial->id .
-                 ") in course (id=" . $this->msocial->course . ")  Found " . count($this->lastinteractions) .
-                 " events. Students' events: " . count($studentinteractions);
-        $result->messages[] = $logmessage;
-
         if ($token) {
             $token->errorstatus = $errormessage;
             $this->set_connection_token($token);
@@ -677,6 +656,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                 $result->messages[] = $message;
             }
         }
-        return $result;
+
+        return $this->post_harvest($result);
     }
 }
