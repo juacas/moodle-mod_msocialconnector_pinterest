@@ -27,21 +27,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$string['pluginname'] = 'Pinterest Connector';
+$string['pluginname'] = 'Conector para Pinterest';
 $string['search'] = 'String to search for in Pinterest Tags';
 $string['search_empty'] = 'Search term absent. Configure it in this activity <a href="../../course/modedit.php?update={$a->cmid}&return=1">settings</a>.';
 $string['search_help'] = 'If specified, only media published with the specific tag is collected for analysis.';
 $string['searchingby'] = 'Searching for tag: "{$a}"';
-$string['harvest'] = 'Search Pinterest groups for student activity';
+$string['harvest'] = 'Buscar en Pinterest la actividad de los estudiantes';
 
-$string['no_pinterest_name_advice'] = 'Unlinked from Pinterest.';
-$string['no_pinterest_name_advice2'] = '{$a->userfullname} is not linked to Pinterest. Register using Pinterest clicking in ' .
+$string['no_pinterest_name_advice'] = 'Desconectado de Pinterest.';
+$string['no_pinterest_name_advice2'] = 'No se conoce la identidad de {$a->userfullname} en Pinterest. Identificarse en Pinterest con ' .
         '<a href="{$a->url}">Pinterest login</a>';
-$string['module_connected_pinterest'] = 'Module connected with Pinterest as user "{$a}" ';
-$string['module_connected_pinterest_usermode'] = 'Module searching Pinterest individually by users.';
-$string['module_not_connected_pinterest'] = 'Module disconnected from Pinterest. It won\'t work until a Pinterest account is linked again.';
-$string['selectthisboard']  = 'Select board to include in the analysis';
-$string['prboard'] = 'Selected boards';
+$string['module_connected_pinterest'] = 'Actividad enlazada con Pinterest con el usuario "{$a}" ';
+$string['module_connected_pinterest_usermode'] = 'Actividad buscando en Pinterest usuario a usuario';
+$string['module_not_connected_pinterest'] = 'Actividad desconectada de Pinterest. No funcionará hasta que se enlace con una cuanta de Pinterest';
+$string['selectthisboard']  = 'Seleccionar los tablones en los que buscar';
+$string['prboard'] = 'Seleccionar tablones';
 // SETTINGS.
 $string['pinterest_app_id'] = 'client_id';
 $string['config_app_id'] = 'client_id according to PinterestAPI (<a href="https://developers.pinterest.com/docs/getting-started/introduction/" target="_blank" >https://developers.pinterest.com/docs/getting-started/introduction/</a>)';
