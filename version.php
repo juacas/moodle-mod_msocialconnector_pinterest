@@ -24,6 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017081700;
+$plugin->version   = 2017081701;
 $plugin->requires  = 2013051407;
 $plugin->component = 'msocialconnector_pinterest';
+$plugin->dependencies = array('mod_msocial' => 2017081900);

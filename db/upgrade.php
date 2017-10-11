@@ -55,4 +55,5 @@ function xmldb_msocialconnector_pinterest_upgrade($oldversion = 0) {
         // pinterest savepoint reached.
         upgrade_plugin_savepoint(true, 2017081700, 'msocialconnector', 'pinterest');
     }
+    return true;
 }
