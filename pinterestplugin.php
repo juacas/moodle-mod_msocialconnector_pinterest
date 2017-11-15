@@ -82,11 +82,11 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     public function calculate_pkis($users, $pkis = []) {
         $pkis = parent::calculate_pkis($users, $pkis);
         foreach ($pkis as $pki) {
-            if (isset($this->comments[$pki->user])) {
-                $pki->prcomments = $this->prcomments[$pki->user];
+            if (isset($this->comments[$pki->userid])) {
+                $pki->prcomments = $this->prcomments[$pki->userid];
             }
-            if (isset($this->saves[$pki->user])) {
-                $pki->saves = $this->saves[$pki->user];
+            if (isset($this->saves[$pki->userid])) {
+                $pki->saves = $this->saves[$pki->userid];
             }
         }
         // Max.
@@ -357,7 +357,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         if (!isset($token->ismaster)) {
             $token->ismaster = 1;
         }
-        $record = $DB->get_record('msocial_pinterest_tokens', array("msocial" => $this->msocial->id, 'user' => $token->user));
+        $record = $DB->get_record('msocial_pinterest_tokens', array("msocial" => $this->msocial->id, 'userid' => $token->userid));
         if ($record) {
             $token->id = $record->id;
             $DB->update_record('msocial_pinterest_tokens', $token);

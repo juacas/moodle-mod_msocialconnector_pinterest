@@ -41,13 +41,13 @@ class restore_msocialconnector_pinterest_subplugin extends restore_subplugin {
         return $paths;
     }
 
-    public function process_msocialconnector_pinterest_fbtoken($data) {
+    public function process_msocialconnector_pinterest_prtoken($data) {
         global $DB;
 
         $data = (object) $data;
 
         $data->msocial = $this->get_new_parentid('msocial');
-        $data->user = $this->get_mappingid('user', $data->user);
+        $data->userid = $this->get_mappingid('user', $data->userid);
 
         $newitemid = $DB->insert_record('msocial_pinterest_tokens', $data);
     }

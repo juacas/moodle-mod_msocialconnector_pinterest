@@ -81,7 +81,7 @@ if ($action == 'connect') {
                 $record = new stdClass();
                 $record->token = $data->access_token;
                 $record->username = $username;
-                $record->user = $USER->id;
+                $record->userid = $USER->id;
                 $plugin->set_connection_token($record);
                 $message = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username);
                 // Fill the profile with username in pinterest.
@@ -89,7 +89,7 @@ if ($action == 'connect') {
 
                 $plugin->set_social_userid($USER, $userme->id, $username);
                 $token = (object) ['token' => $data->access_token, 'msocial' => $plugin->msocial->id, 'ismaster' => 0,
-                                'user' => $USER->id, 'username' => $username];
+                                'userid' => $USER->id, 'username' => $username];
                 $plugin->set_connection_token($token);
                 $message .= "Profile updated with pinterest user $username.";
             } else {

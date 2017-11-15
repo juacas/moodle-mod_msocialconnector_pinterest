@@ -10,13 +10,13 @@
         <FIELD NAME="msocial" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="token" TYPE="char" LENGTH="200" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ismaster" TYPE="int" LENGTH="1" NOTNULL="true" default="0" SEQUENCE="false"/>
-        <FIELD NAME="user" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" comment="Local user token for accessing by user to the api"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" comment="Local user token for accessing by user to the api"/>
         <FIELD NAME="username" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="errorstatus" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="msocial_id" TYPE="unique" FIELDS="msocial,user"/>
+        <KEY NAME="msocial_id" TYPE="unique" FIELDS="msocial,userid"/>
       </KEYS>
     </TABLE>
   </TABLES>

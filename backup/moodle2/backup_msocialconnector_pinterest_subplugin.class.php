@@ -38,12 +38,12 @@ class backup_msocialconnector_pinterest_subplugin extends backup_subplugin {
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
         if ($userinfo) {
             // TODO: user's connection token must be backed-up? It may be a security issue.
-            $igtoken = new backup_nested_element('prtoken', array(), array('token', 'username', 'ismaster', 'user'));
+            $igtoken = new backup_nested_element('prtoken', array(), array('token', 'username', 'ismaster', 'userid'));
             $subplugin->add_child($subpluginwrapper);
             $subpluginwrapper->add_child($igtoken);
             // Map tables...
             $igtoken->set_source_table('msocial_pinterest_tokens', array('msocial' => backup::VAR_ACTIVITYID));
-            $igtoken->annotate_ids('user', 'user');
+            $igtoken->annotate_ids('user', 'userid');
         }
         return $subplugin;
     }
