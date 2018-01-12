@@ -604,6 +604,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             if ($lastharvest) {
                 $since = "&since=$lastharvest";
             }
+            // Iterate boards.
             foreach ($boards as $boardid) {
                 $pinscoll = $pr->pins->fromBoard($boardid,
                         ['fields' => 'id,link,note,url,board,counts,created_at,creator,media,metadata,original_link']);
@@ -615,19 +616,24 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                 do {
                     foreach ($pinscoll->all() as $pin) {
                         $postinteraction = $this->process_pin($pin);
-                        // pin->counts->saves times saved. => reaction custom pki.
-                        // pin->counts->comments. TODO: Get an example of comment model???.
-                        if ($pin->counts['comments'] > 0) {
-                            if (!isset($this->comments[$postinteraction->fromid])) {
-                                $this->comments[$postinteraction->fromid] = 0;
+                        $pinstime = new \DateTime($pin->created_at);
+                        if (msocial_time_is_between($pinstime->getTimestamp(),
+                                                    (int)$this->msocial->startdate,
+                                                    (int)$this->msocial->enddate)) {
+                            // pin->counts->saves times saved. => reaction custom pki.
+                            // pin->counts->comments. TODO: Get an example of comment model???.
+                            if ($pin->counts['comments'] > 0) {
+                                if (!isset($this->comments[$postinteraction->fromid])) {
+                                    $this->comments[$postinteraction->fromid] = 0;
+                                }
+                                $this->comments[$postinteraction->fromid] += $pin->counts['comments'];
                             }
-                            $this->comments[$postinteraction->fromid] += $pin->counts['comments'];
-                        }
-                        if ($pin->counts['saves'] > 0) {
-                            if (!isset($this->saves[$postinteraction->fromid])) {
-                                $this->saves[$postinteraction->fromid] = 0;
+                            if ($pin->counts['saves'] > 0) {
+                                if (!isset($this->saves[$postinteraction->fromid])) {
+                                    $this->saves[$postinteraction->fromid] = 0;
+                                }
+                                $this->saves[$postinteraction->fromid] += $pin->counts['saves'];
                             }
-                            $this->saves[$postinteraction->fromid] += $pin->counts['saves'];
                         }
                     }
                     $otherpage = $pinscoll->hasNextPage();
@@ -642,7 +648,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             $cm = $this->cm;
             $msocial = $this->msocial;
             $errormessage = "For module msocial\\connection\\pinterest: $msocial->name (id=$cm->instance) in course (id=$msocial->course) " .
-            " ERROR:" . $e->getMessage() . " Response headers were: " . http_build_query($pr->request->getHeaders(),'',', ');
+            " ERROR:" . $e->getMessage() . " Response headers were: " . http_build_query($pr->request->getHeaders(), '', ', ');
             $result->messages[] = $errormessage;
             $result->errors[] = (object) ['message' => $errormessage];
         }
