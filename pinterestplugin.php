@@ -196,15 +196,18 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                         $username = $token->username;
                         $errorstatus = $token->errorstatus;
                         if ($errorstatus) {
-                            $notifications[] = '<p>' .
-                                     get_string('problemwithpinterestaccount', 'msocialconnector_pinterest', $errorstatus);
-                        }
-
-                        $messages[] = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username) . $OUTPUT->action_link(
+                            $linkuseraction = $OUTPUT->action_link(
+                                    new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
+                                            array('id' => $id, 'action' => 'connect')), "  <b>Relink user!!</b>");
+                            $notifications[] = get_string('problemwithpinterestaccount', 'msocialconnector_pinterest', $errorstatus) . $linkuseraction;
+                        } else {
+                        $linkuseraction = $OUTPUT->action_link(
                                 new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
-                                        array('id' => $id, 'action' => 'connect')), "Change user") . '/' . $OUTPUT->action_link(
+                                        array('id' => $id, 'action' => 'connect')), "Change user");
+                        $messages[] = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username) . $linkuseraction . '/' . $OUTPUT->action_link(
                                 new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
                                         array('id' => $id, 'action' => 'disconnect')), "Disconnect") . ' ';
+                        }
                     } else {
                         $notifications[] = get_string('module_not_connected_pinterest', 'msocialconnector_pinterest') . $OUTPUT->action_link(
                                 new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
@@ -651,7 +654,8 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             $cm = $this->cm;
             $msocial = $this->msocial;
             $errormessage = "For module msocial\\connection\\pinterest: $msocial->name (id=$cm->instance) in course (id=$msocial->course) " .
-            " ERROR:" . $e->getMessage() . " Response headers were: " . http_build_query($pr->request->getHeaders(), '', ', ');
+            " ERROR:" . $e->getMessage();
+            //" Response headers were: " . http_build_query($pr->request->getHeaders(), '', ', ');
             $result->messages[] = $errormessage;
             $result->errors[] = (object) ['message' => $errormessage];
         }
