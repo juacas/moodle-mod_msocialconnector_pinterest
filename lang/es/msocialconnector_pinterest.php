@@ -40,7 +40,7 @@ $string['no_pinterest_name_advice2'] = 'No se conoce la identidad de {$a->userfu
 $string['module_connected_pinterest'] = 'Actividad enlazada con Pinterest con el usuario "{$a}" ';
 $string['module_connected_pinterest_usermode'] = 'Actividad buscando en Pinterest usuario a usuario';
 $string['module_not_connected_pinterest'] = 'Actividad desconectada de Pinterest. No funcionará hasta que se enlace con una cuenta de Pinterest';
-$string['selectthisboard']  = 'Seleccionar los tablones en los que buscar';
+$string['selectthisboard']  = 'Tablones en los que buscar';
 $string['prboard'] = 'Seleccionar tablones';
 // SETTINGS.
 $string['pinterest_app_id'] = 'client_id';
