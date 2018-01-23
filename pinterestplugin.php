@@ -306,10 +306,13 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      *
      * @see \msocial\msocial_plugin::get_pki_list() */
     public function get_pki_list() {
-        $pkiobjs['prpins'] = new pki_info('prpins', null, pki_info::PKI_INDIVIDUAL, pki_info::PKI_CALCULATED, social_interaction::POST, '*',
+        $pkiobjs['prpins'] = new pki_info('prpins', get_string('pki_description_prpins', 'msocialconnector_pinterest'),
+                pki_info::PKI_INDIVIDUAL, pki_info::PKI_CALCULATED, social_interaction::POST, '*',
                 social_interaction::DIRECTION_AUTHOR);
-        $pkiobjs['prcomments'] = new pki_info('prcomments', null, pki_info::PKI_INDIVIDUAL, pki_info::PKI_CUSTOM, social_interaction::REPLY);
-        $pkiobjs['saves'] = new pki_info('saves', null, pki_info::PKI_INDIVIDUAL, pki_info::PKI_CUSTOM, social_interaction::REACTION);
+        $pkiobjs['prcomments'] = new pki_info('prcomments', get_string('pki_description_prcomments', 'msocialconnector_pinterest'),
+                pki_info::PKI_INDIVIDUAL, pki_info::PKI_CUSTOM, social_interaction::REPLY);
+        $pkiobjs['saves'] = new pki_info('saves', get_string('pki_description_saves', 'msocialconnector_pinterest'),
+                pki_info::PKI_INDIVIDUAL, pki_info::PKI_CUSTOM, social_interaction::REACTION);
         $pkiobjs['max_prpins'] = new pki_info('max_prpins', null, pki_info::PKI_AGREGATED);
         $pkiobjs['max_prcomments'] = new pki_info('max_prcomments', null, pki_info::PKI_AGREGATED, pki_info::PKI_CUSTOM);
         $pkiobjs['max_saves'] = new pki_info('max_saves', null, pki_info::PKI_AGREGATED, pki_info::PKI_CUSTOM);

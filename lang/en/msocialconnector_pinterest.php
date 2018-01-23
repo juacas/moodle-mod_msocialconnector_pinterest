@@ -48,3 +48,7 @@ $string['config_app_id'] = 'client_id according to PinterestAPI (<a href="https:
 $string['pinterest_app_secret'] = 'client_secret';
 $string['config_app_secret'] = 'client_secret according to PinterestAPI (<a href="https://developers.pinterest.com/docs/getting-started/introduction/" target="_blank" >https://developers.pinterest.com/docs/getting-started/introduction/</a>)';
 $string['problemwithpinterestaccount'] = 'Recent attempts to get the posts resulted in an error. Try to reconnect Pinterest with your user. Message: {$a}';
+
+$string['pki_description_prpins'] = 'Published pins';
+$string['pki_description_prcomments'] = 'Received comments';
+$string['pki_description_saves'] = 'Saved pins';
