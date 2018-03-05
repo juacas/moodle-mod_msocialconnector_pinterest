@@ -11,7 +11,6 @@
 namespace DirkGroenen\Pinterest\Auth;
 
 use DirkGroenen\Pinterest\Transport\Request;
-use DirkGroenen\Pinterest\Exceptions\PinterestException;
 
 class PinterestOAuth {
 

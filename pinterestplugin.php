@@ -25,8 +25,6 @@
  */
 namespace mod_msocial\connector;
 
-use pinterest\GraphNodes\GraphEdge;
-use pinterest\GraphNodes\GraphNode;
 use mod_msocial\pki_info;
 use msocial\msocial_plugin;
 use mod_msocial\social_user;
@@ -204,8 +202,8 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                         $linkuseraction = $OUTPUT->action_link(
                                 new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
                                         array('id' => $id, 'action' => 'connect')), "Change user");
-                        $messages[] = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username) . $linkuseraction . '/' . $OUTPUT->action_link(
-                                new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
+                        $messages[] = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username) . $linkuseraction . '/' .
+                                        $OUTPUT->action_link( new \moodle_url('/mod/msocial/connector/pinterest/connectorSSO.php',
                                         array('id' => $id, 'action' => 'disconnect')), "Disconnect") . ' ';
                         }
                     } else {
@@ -287,7 +285,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     }
 
     public function get_interaction_url(social_interaction $interaction) {
-        // pinterest uid for a comment is generated with group id and comment id.
+        // Pinterest uid for a comment is generated with group id and comment id.
         $parts = explode('_', $interaction->uid);
         if (count($parts) == 2) {
             $url = 'https://www.pinterest.com/pin/' . $parts[0] . '/permalink/' . $parts[1]; // TODO:
@@ -504,9 +502,9 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                             continue;
                         }
                         $postinteraction = $this->process_post($post);
-                        // $post->users_in_photo -> mentions.
-                        // $post->comments -> count of comments.
-                        // $post->likes -> count of comments.
+                        // The $post->users_in_photo -> mentions.
+                        // The $post->comments -> count of comments.
+                        // The $post->likes -> count of comments.
                         $this->igcomments[$token->user] += $post->comments->count;
                         if ($post->comments->count > 0) {
                             $comments = $ig->getMediaComments($post->id);
@@ -569,7 +567,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             }
         }
         // TODO: define if processsing is needed or not.
-        $processedinteractions = $this->lastinteractions; // $this->process_interactions($this->lastinteractions);
+        $processedinteractions = $this->lastinteractions;
         $studentinteractions = array_filter($processedinteractions,
                 function ($interaction) {
                     return isset($interaction->fromid);

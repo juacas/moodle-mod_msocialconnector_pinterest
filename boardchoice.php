@@ -28,7 +28,7 @@ use DirkGroenen\Pinterest\Pinterest;
 
 require_once("../../../../config.php");
 require_once('../../locallib.php');
-require_once('../../msocialconnectorplugin.php');
+require_once('../../classes/msocialconnectorplugin.php');
 require_once('pinterestplugin.php');
 require_once('vendor/autoload.php');
 global $CFG;

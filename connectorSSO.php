@@ -28,7 +28,7 @@ use mod_msocial\connector\msocial_connector_pinterest;
 
 require_once('vendor/autoload.php');
 require_once("../../../../config.php");
-require_once('../../msocialconnectorplugin.php');
+require_once('../../classes/msocialconnectorplugin.php');
 require_once('pinterestplugin.php');
 global $CFG;
 if (isset($_SESSION['pinterest_id_callback'])) { // Callback from pinterest.
