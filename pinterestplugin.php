@@ -59,8 +59,11 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     }
 
     /**
-     * @return true if the plugin is making searches in the social network */
-    public function is_tracking() {
+     *
+     * {@inheritDoc}
+     * @see \msocial\msocial_plugin::can_harvest()
+     */
+    public function can_harvest() {
         $igsearch = $this->get_config(self::CONFIG_PRSEARCH);
         switch ($this->mode) {
             case self::MODE_BOARD:
@@ -72,7 +75,6 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                 return false;
         }
     }
-
     /**
      * {@inheritdoc}
      *
@@ -265,12 +267,9 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         global $OUTPUT;
         $harvestbutton = '';
         $id = $this->cm->id;
-        $context = \context_module::instance($id);
-        if (has_capability('mod/msocial:manage', $context) && $this->is_tracking()) {
-            $harvestbutton = $OUTPUT->action_icon(
-                    new \moodle_url('/mod/msocial/harvest.php', ['id' => $id, 'subtype' => $this->get_subtype()]),
-                    new \pix_icon('a/refresh', get_string('harvest', 'msocialconnector_pinterest')));
-        }
+        $harvestbutton = $OUTPUT->action_icon(
+                new \moodle_url('/mod/msocial/harvest.php', ['id' => $id, 'subtype' => $this->get_subtype()]),
+                new \pix_icon('a/refresh', get_string('harvest', 'msocialconnector_pinterest')));
         return $harvestbutton;
     }
     /** Place social-network user information or a link to connect.
