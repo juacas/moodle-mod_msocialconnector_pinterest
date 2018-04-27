@@ -25,7 +25,7 @@
  */
 namespace mod_msocial\connector;
 
-use mod_msocial\pki_info;
+use mod_msocial\kpi_info;
 use msocial\msocial_plugin;
 use mod_msocial\social_user;
 use DirkGroenen\Pinterest\Models\Board;
@@ -78,33 +78,33 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     /**
      * {@inheritdoc}
      *
-     * @see \msocial\msocial_plugin::calculate_pkis() */
-    public function calculate_pkis($users, $pkis = []) {
-        $pkis = parent::calculate_pkis($users, $pkis);
-        foreach ($pkis as $pki) {
-            if (isset($this->comments[$pki->userid])) {
-                $pki->prcomments = $this->prcomments[$pki->userid];
+     * @see \msocial\msocial_plugin::calculate_kpis() */
+    public function calculate_kpis($users, $kpis = []) {
+        $kpis = parent::calculate_kpis($users, $kpis);
+        foreach ($kpis as $kpi) {
+            if (isset($this->comments[$kpi->userid])) {
+                $kpi->prcomments = $this->prcomments[$kpi->userid];
             }
-            if (isset($this->saves[$pki->userid])) {
-                $pki->saves = $this->saves[$pki->userid];
+            if (isset($this->saves[$kpi->userid])) {
+                $kpi->saves = $this->saves[$kpi->userid];
             }
         }
         // Max.
         $maxcomments = 0;
         $maxsaves = 0;
-        foreach ($pkis as $pki) {
-            if (isset($pki->prcomments)) {
-                $maxcomments = max([$maxcomments, $pki->prcomments]);
+        foreach ($kpis as $kpi) {
+            if (isset($kpi->prcomments)) {
+                $maxcomments = max([$maxcomments, $kpi->prcomments]);
             }
-            if (isset($pki->saves)) {
-                $maxsaves = max([$maxsaves, $pki->saves]);
+            if (isset($kpi->saves)) {
+                $maxsaves = max([$maxsaves, $kpi->saves]);
             }
         }
-        foreach ($pkis as $pki) {
-            $pki->max_prcomments = $maxcomments;
-            $pki->max_saves = $maxsaves;
+        foreach ($kpis as $kpi) {
+            $kpi->max_prcomments = $maxcomments;
+            $kpi->max_saves = $maxsaves;
         }
-        return $pkis;
+        return $kpis;
     }
 
     /** The msocial has been deleted - cleanup subplugin
@@ -301,19 +301,19 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     /**
      * {@inheritdoc}
      *
-     * @see \msocial\msocial_plugin::get_pki_list() */
-    public function get_pki_list() {
-        $pkiobjs['prpins'] = new pki_info('prpins', get_string('pki_description_prpins', 'msocialconnector_pinterest'),
-                pki_info::PKI_INDIVIDUAL, pki_info::PKI_CALCULATED, social_interaction::POST, '*',
+     * @see \msocial\msocial_plugin::get_kpi_list() */
+    public function get_kpi_list() {
+        $kpiobjs['prpins'] = new kpi_info('prpins', get_string('kpi_description_prpins', 'msocialconnector_pinterest'),
+                kpi_info::KPI_INDIVIDUAL, kpi_info::KPI_CALCULATED, social_interaction::POST, '*',
                 social_interaction::DIRECTION_AUTHOR);
-        $pkiobjs['prcomments'] = new pki_info('prcomments', get_string('pki_description_prcomments', 'msocialconnector_pinterest'),
-                pki_info::PKI_INDIVIDUAL, pki_info::PKI_CUSTOM, social_interaction::REPLY);
-        $pkiobjs['saves'] = new pki_info('saves', get_string('pki_description_saves', 'msocialconnector_pinterest'),
-                pki_info::PKI_INDIVIDUAL, pki_info::PKI_CUSTOM, social_interaction::REACTION);
-        $pkiobjs['max_prpins'] = new pki_info('max_prpins', null, pki_info::PKI_AGREGATED);
-        $pkiobjs['max_prcomments'] = new pki_info('max_prcomments', null, pki_info::PKI_AGREGATED, pki_info::PKI_CUSTOM);
-        $pkiobjs['max_saves'] = new pki_info('max_saves', null, pki_info::PKI_AGREGATED, pki_info::PKI_CUSTOM);
-        return $pkiobjs;
+        $kpiobjs['prcomments'] = new kpi_info('prcomments', get_string('kpi_description_prcomments', 'msocialconnector_pinterest'),
+                kpi_info::KPI_INDIVIDUAL, kpi_info::KPI_CUSTOM, social_interaction::REPLY);
+        $kpiobjs['saves'] = new kpi_info('saves', get_string('kpi_description_saves', 'msocialconnector_pinterest'),
+                kpi_info::KPI_INDIVIDUAL, kpi_info::KPI_CUSTOM, social_interaction::REACTION);
+        $kpiobjs['max_prpins'] = new kpi_info('max_prpins', null, kpi_info::KPI_AGREGATED);
+        $kpiobjs['max_prcomments'] = new kpi_info('max_prcomments', null, kpi_info::KPI_AGREGATED, kpi_info::KPI_CUSTOM);
+        $kpiobjs['max_saves'] = new kpi_info('max_saves', null, kpi_info::KPI_AGREGATED, kpi_info::KPI_CUSTOM);
+        return $kpiobjs;
     }
 
     /**
@@ -576,8 +576,8 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         $this->store_interactions($processedinteractions);
         $contextcourse = \context_course::instance($this->msocial->course);
         list($students, $nonstudents, $active, $users) = array_values(msocial_get_users_by_type($contextcourse));
-        $pkis = $this->calculate_pkis($users);
-        $this->store_pkis($pkis, true);
+        $kpis = $this->calculate_kpis($users);
+        $this->store_kpis($kpis, true);
         $this->set_config(\mod_msocial\connector\msocial_connector_plugin::LAST_HARVEST_TIME, time());
 
         $logmessage = "For module msocial\\connection\\pinterest: \"" . $this->msocial->name . "\" (id=" . $this->msocial->id .
@@ -626,7 +626,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                         if (msocial_time_is_between($pinstime->getTimestamp(),
                                                     (int)$this->msocial->startdate,
                                                     (int)$this->msocial->enddate)) {
-                            // pin->counts->saves times saved. => reaction custom pki.
+                            // pin->counts->saves times saved. => reaction custom kpi.
                             // pin->counts->comments. TODO: Get an example of comment model???.
                             if ($pin->counts['comments'] > 0) {
                                 if (!isset($this->comments[$postinteraction->fromid])) {
