@@ -66,8 +66,8 @@ if ($action == 'connect') {
     header("Location: $loginurl");
     die();
 } else if ($action == 'callback') {
-    $code = required_param('code', PARAM_RAW);
     try {
+        $code = required_param('code', PARAM_RAW);
         $data = $pr->auth->getOAuthToken($code);
         if (!isset($data->access_token)) {
             $message .= $data->message;
