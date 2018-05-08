@@ -64,6 +64,9 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      * @see \msocial\msocial_plugin::can_harvest()
      */
     public function can_harvest() {
+        if ($this->get_connection_token() == null) {
+            return false;
+        }
         $igsearch = $this->get_config(self::CONFIG_PRSEARCH);
         switch ($this->mode) {
             case self::MODE_BOARD:
