@@ -243,21 +243,17 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                              $action;
                 }
             }
-                // Check pinterest hashtags...
-//                 $igsearch = $this->get_config(self::CONFIG_PRSEARCH);
-//                 if (trim($igsearch) === "") {
-//                     $notifications[] = get_string('search_empty', 'msocialconnector_pinterest', ['cmid' => $cm->id]);
-//                 } else {
-//                     $messages[] = get_string('searchingby', 'msocialconnector_pinterest', $igsearch);
-//                 }
+
             // Check user's social credentials.
             $socialuserids = $this->get_social_userid($USER);
             if (!$socialuserids) { // Offer to register.
                 $notifications[] = $this->render_user_linking($USER, false, true);
             }
+            $messages[] = get_string('linkstudentsmanually', 'msocialconnector_pinterest', $this->msocial);
         }
         return [$messages, $notifications];
     }
+
     public function render_board_links() {
         $boardnames = json_decode($this->get_config(self::CONFIG_PRBOARDNAME));
         $boardinfo = [];
