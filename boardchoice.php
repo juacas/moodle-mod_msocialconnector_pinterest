@@ -44,8 +44,8 @@ $plugin = new msocial_connector_pinterest($msocial);
 require_capability('mod/msocial:manage', $context);
 
 if ($action == 'selectboard') {
-    $thispageurl = new moodle_url('/mod/msocial/connector/pinterest/boardchoice.php', array('id' => $id, 'action' => 'select'));
-    $PAGE->set_url($thispageurl);
+    $interactionurl = new moodle_url('/mod/msocial/connector/pinterest/boardchoice.php', array('id' => $id, 'action' => 'select'));
+    $PAGE->set_url($interactionurl);
     $PAGE->set_title(format_string($cm->name));
     $PAGE->set_heading($course->fullname);
     // Print the page header.
@@ -71,7 +71,7 @@ if ($action == 'selectboard') {
         $table->head = ['Boards', get_string('description')];
         $data = [];
 
-        $out = '<form method="GET" action="' . $thispageurl->out_omit_querystring(true) . '" >';
+        $out = '<form method="GET" action="' . $interactionurl->out_omit_querystring(true) . '" >';
         $out .= '<input type="hidden" name="id" value="' . $id . '"/>';
         $out .= '<input type="hidden" name="action" value="setboards"/>';
         /** @var \DirkGroenen\Pinterest\Models\Board $board */
@@ -99,8 +99,8 @@ if ($action == 'selectboard') {
 } else if ($action == 'setboards') {
     $boards = required_param_array('board', PARAM_RAW);
     $totalboards = required_param('totalboards', PARAM_INT);
-    $thispageurl = new moodle_url('/mod/msocial/connector/pinterest/boardchoice.php', array('id' => $id, 'action' => 'select'));
-    $PAGE->set_url($thispageurl);
+    $interactionurl = new moodle_url('/mod/msocial/connector/pinterest/boardchoice.php', array('id' => $id, 'action' => 'select'));
+    $PAGE->set_url($interactionurl);
     $PAGE->set_title(get_string('selectthisboard', 'msocialconnector_pinterest'));
     $PAGE->set_heading($course->fullname);
     // Print the page header.

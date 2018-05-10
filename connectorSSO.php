@@ -58,13 +58,13 @@ if ($action == 'connect') {
     // GetToken.
     $callbackurl = (new moodle_url("/mod/msocial/connector/pinterest/connectorSSO.php",
             array('action' => 'callback', 'type' => $type)))->out();
-    // Store redirection params in session. Pinterest does not support params in callbackurl.
-    session_start();
-    $_SESSION['pinterest_id_callback'] = $id;
-    $loginurl = $pr->auth->getLoginUrl($callbackurl);
-    $loginurl = str_replace('&amp;', '&', $loginurl);
-    header("Location: $loginurl");
-    die();
+            // Store redirection params in session. Pinterest does not support params in callbackurl.
+            session_start();
+            $_SESSION['pinterest_id_callback'] = $id;
+            $loginurl = $pr->auth->getLoginUrl($callbackurl);
+            $loginurl = str_replace('&amp;', '&', $loginurl);
+            header("Location: $loginurl");
+            die();
 } else if ($action == 'callback') {
     try {
         $code = required_param('code', PARAM_RAW);
@@ -86,7 +86,7 @@ if ($action == 'connect') {
                 $message = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username);
                 // Fill the profile with username in pinterest.
             } else if ($type === 'profile') {
-
+                
                 $plugin->set_social_userid($USER, $userme->id, $username);
                 $token = (object) ['token' => $data->access_token, 'msocial' => $plugin->msocial->id, 'ismaster' => 0,
                                 'userid' => $USER->id, 'username' => $username];
@@ -103,11 +103,11 @@ if ($action == 'connect') {
         // When validation fails or other local issues
         $message .= ('pinterest SDK returned an error: ' . $e->getMessage()); // TODO: pasar a lang.
     }
-
+    
     // Show headings and menus of page.
     $PAGE->set_url($thispageurl);
     $PAGE->set_title(format_string($cm->name));
-
+    
     $PAGE->set_heading($course->fullname);
     // Print the page header.
     echo $OUTPUT->header();

@@ -249,7 +249,9 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             if (!$socialuserids) { // Offer to register.
                 $notifications[] = $this->render_user_linking($USER, false, true);
             }
-            $messages[] = get_string('linkstudentsmanually', 'msocialconnector_pinterest', $this->msocial);
+            if (has_capability('mod/msocial:manage', $context)) {
+                $messages[] = get_string('linkstudentsmanually', 'msocialconnector_pinterest', $this->msocial);
+            }
         }
         return [$messages, $notifications];
     }
