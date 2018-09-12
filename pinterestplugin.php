@@ -384,7 +384,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         $DB->delete_records('msocial_pinterest_tokens', array('msocial' => $this->msocial->id, 'ismaster' => 0));        
         // Remove mapusers.
         $DB->delete_records('msocial_mapusers',['msocial' => $msocial->id, 'type' => $this->get_subtype()]);
-        return array('component'=>$this->get_name(), 'item'=>get_string('unlinksocialaccount', 'msocial',
+        return array('component'=>$this->get_name(), 'item'=>get_string('resetdone', 'msocial',
                 "MSOCIAL $msocial->id: mapusers, tokens"), 'error'=>false);
     }
     /**
