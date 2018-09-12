@@ -378,13 +378,14 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      * @see \msocial\msocial_plugin::reset_userdata()
      */
     public function reset_userdata($data) {
-        // Forget user tokens.
-        $this->unset_connection_token();
-        // Remove mapusers.
         global $DB;
         $msocial = $this->msocial;
+        // Forget user tokens.
+        $DB->delete_records('msocial_pinterest_tokens', array('msocial' => $this->msocial->id, 'ismaster' => 0));        
+        // Remove mapusers.
         $DB->delete_records('msocial_mapusers',['msocial' => $msocial->id, 'type' => $this->get_subtype()]);
-        return array('component'=>$this->get_name(), 'item'=>get_string('unlinksocialaccount', 'msocial'), 'error'=>false);
+        return array('component'=>$this->get_name(), 'item'=>get_string('unlinksocialaccount', 'msocial',
+                "MSOCIAL $msocial->id: mapusers, tokens"), 'error'=>false);
     }
     /**
      * 
