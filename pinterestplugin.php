@@ -339,7 +339,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      * {@inheritdoc}
      *
      * @global moodle_database $DB
-     * @return type */
+     * @return \stdClass token record */
     public function get_connection_token() {
         global $DB;
         if ($this->msocial) {
@@ -372,7 +372,25 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
             $DB->insert_record('msocial_pinterest_tokens', $token);
         }
     }
-
+    /**
+     *
+     * {@inheritDoc}
+     * @see \msocial\msocial_plugin::reset_userdata()
+     */
+    public function reset_userdata($data) {
+        // Forget user tokens.
+        $this->unset_connection_token();
+        // Remove mapusers.
+        global $DB;
+        $msocial = $this->msocial;
+        $DB->delete_records('msocial_mapusers',['msocial' => $msocial->id, 'type' => $this->get_subtype()]);
+        return array('component'=>$this->get_name(), 'item'=>get_string('unlinksocialaccount', 'msocial'), 'error'=>false);
+    }
+    /**
+     * 
+     * {@inheritDoc}
+     * @see \mod_msocial\connector\msocial_connector_plugin::unset_connection_token()
+     */
     public function unset_connection_token() {
         global $DB;
         $DB->delete_records('msocial_pinterest_tokens', array('msocial' => $this->msocial->id, 'ismaster' => 1));
@@ -459,8 +477,12 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
                 return $this->harvest_users();
         }
     }
-
-    public function harvest_users() {
+    /**
+     * @deprecated
+     * @throws \Exception
+     * @return \stdClass
+     */
+    private function harvest_users() {
         global $DB;
         print_error('Mode not implemented!!!'); // TODO implement harvest by user in pinterest.
         require_once('pinterest-sdk/pinterestException.php');
