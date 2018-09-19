@@ -35,9 +35,9 @@ $string['searchingby'] = 'Searching for tag: "{$a}"';
 $string['harvest'] = 'Buscar en Pinterest la actividad de los estudiantes';
 
 $string['no_pinterest_name_advice'] = 'Desconectado de Pinterest.';
-$string['no_pinterest_name_advice2_when_api_approved'] = 'No se conoce la identidad de {$a->userfullname} en Pinterest. Identificarse en Pinterest con ' .
+$string['no_pinterest_name_advice2'] = 'No se conoce la identidad de {$a->userfullname} en Pinterest. Identificarse en Pinterest con ' .
         '<a href="{$a->url}">Pinterest login</a>';
-$string['no_pinterest_name_advice2'] = 'No se conoce la identidad de {$a->userfullname} en Pinterest. Envíe contenido a Pinterest siguiendo las instrucciones de la actividad e informe a su profesor de su nombre de usuario en Pinterest.';
+$string['no_pinterest_name_advice2_when_api_unapproved'] = 'No se conoce la identidad de {$a->userfullname} en Pinterest. Envíe contenido a Pinterest siguiendo las instrucciones de la actividad e informe a su profesor de su nombre de usuario en Pinterest.';
 $string['linkstudentsmanually'] = '<b>Atención: El enlazado automático está temporalmente desactivado para Pinterest:</b> Revise los usuarios desconocidos de la actividad de Pinterest y pulse en los nombres entre corchetes para enlazarlos con sus alumnos.';
 
 $string['module_connected_pinterest'] = 'Actividad enlazada con Pinterest con el usuario "{$a}" ';
