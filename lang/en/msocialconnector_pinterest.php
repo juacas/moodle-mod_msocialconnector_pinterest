@@ -35,9 +35,9 @@ $string['searchingby'] = 'Searching for tag: "{$a}"';
 $string['harvest'] = 'Search Pinterest groups for student activity';
 
 $string['no_pinterest_name_advice'] = 'Unlinked from Pinterest.';
-$string['no_pinterest_name_advice2_when_api_approved'] = '{$a->userfullname} is not linked to Pinterest. Register using Pinterest clicking in ' .
+$string['no_pinterest_name_advice2'] = '{$a->userfullname} is not linked to Pinterest. Register using Pinterest clicking in ' .
         '<a href="{$a->url}">Pinterest login</a>';
-$string['no_pinterest_name_advice2'] = '{$a->userfullname} is not linked to Pinterest. Post some content following the instructions of the activity and tell your teacher what is your username in Pinterest.';
+$string['no_pinterest_name_advice2_when_api_unapproved'] = '{$a->userfullname} is not linked to Pinterest. Post some content following the instructions of the activity and tell your teacher what is your username in Pinterest. ';
 $string['linkstudentsmanually'] = '<b>WARNING Auto-linking is not available for Pinterest.</b> Browse the stranger users of Pinterest in any visualization and click on their bracketed names to link them to your students.';
 $string['module_connected_pinterest'] = 'Module connected with Pinterest as user "{$a}" ';
 $string['module_connected_pinterest_usermode'] = 'Module searching Pinterest individually by users.';
