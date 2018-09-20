@@ -31,6 +31,7 @@ use mod_msocial\social_user;
 use DirkGroenen\Pinterest\Models\Board;
 use DirkGroenen\Pinterest\Models\Collection;
 use DirkGroenen\Pinterest\Pinterest;
+use mod_msocial\users_struct;
 
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
@@ -83,7 +84,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      * {@inheritdoc}
      *
      * @see \msocial\msocial_plugin::calculate_kpis() */
-    public function calculate_kpis($users, $kpis = []) {
+    public function calculate_kpis(users_struct $users, $kpis = []) {
         $kpis = parent::calculate_kpis($users, $kpis);
         foreach ($kpis as $kpi) {
             if (isset($this->comments[$kpi->userid])) {
@@ -386,7 +387,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      * {@inheritDoc}
      * @see \msocial\msocial_plugin::reset_userdata()
      */
-    public function reset_userdata($data) {
+    public function reset_userdata(\stdClass $data) {
         global $DB;
         $msocial = $this->msocial;
         // Forget user tokens.
