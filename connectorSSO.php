@@ -23,14 +23,13 @@
  * @package msocial
  * *******************************************************************************
  */
-use MetzWeb\pinterest\pinterest;
 use mod_msocial\connector\msocial_connector_pinterest;
 
 require_once('vendor/autoload.php');
 require_once("../../../../config.php");
 require_once('../../classes/msocialconnectorplugin.php');
 require_once('pinterestplugin.php');
-global $CFG;
+
 if (isset($_SESSION['pinterest_id_callback'])) { // Callback from pinterest.
     $id = $_SESSION['pinterest_id_callback'];
     unset($_SESSION['pinterest_id_callback']);
@@ -43,6 +42,7 @@ $cm = get_coursemodule_from_id('msocial', $id);
 $course = get_course($cm->course);
 require_login($course);
 $context = context_module::instance($id);
+global $DB;
 $msocial = $DB->get_record('msocial', array('id' => $cm->instance), '*', MUST_EXIST);
 $plugin = new msocial_connector_pinterest($msocial);
 
@@ -78,6 +78,7 @@ if ($action == 'connect') {
             $username = $userme->username;
             // Save tokens for future use.
             if ($type === 'connect' && has_capability('mod/msocial:manage', $context)) {
+                global $USER;
                 $record = new stdClass();
                 $record->token = $data->access_token;
                 $record->username = $username;
@@ -86,7 +87,7 @@ if ($action == 'connect') {
                 $message = get_string('module_connected_pinterest', 'msocialconnector_pinterest', $username);
                 // Fill the profile with username in pinterest.
             } else if ($type === 'profile') {
-                
+                global $USER;
                 $plugin->set_social_userid($USER, $userme->id, $username);
                 $token = (object) ['token' => $data->access_token, 'msocial' => $plugin->msocial->id, 'ismaster' => 0,
                                 'userid' => $USER->id, 'username' => $username];
@@ -105,6 +106,7 @@ if ($action == 'connect') {
     }
     
     // Show headings and menus of page.
+    global $PAGE, $OUTPUT;
     $PAGE->set_url($thispageurl);
     $PAGE->set_title(format_string($cm->name));
     
