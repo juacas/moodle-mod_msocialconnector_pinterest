@@ -30,9 +30,9 @@ require_once("../../../../config.php");
 require_once('../../classes/msocialconnectorplugin.php');
 require_once('pinterestplugin.php');
 
-if (isset($_SESSION['pinterest_id_callback'])) { // Callback from pinterest.
-    $id = $_SESSION['pinterest_id_callback'];
-    unset($_SESSION['pinterest_id_callback']);
+if (isset($SESSION->msocialSSOid)) { // Callback from pinterest.
+    $id = $SESSION->msocialSSOid;
+    unset($SESSION->msocialSSOid);
 } else {
     $id = required_param('id', PARAM_INT); // MSocial module instance.
 }
@@ -60,7 +60,7 @@ if ($action == 'connect') {
             array('action' => 'callback', 'type' => $type)))->out();
             // Store redirection params in session. Pinterest does not support params in callbackurl.
             session_start();
-            $_SESSION['pinterest_id_callback'] = $id;
+            $SESSION->msocialSSOid = $id;
             $loginurl = $pr->auth->getLoginUrl($callbackurl);
             $loginurl = str_replace('&amp;', '&', $loginurl);
             header("Location: $loginurl");
