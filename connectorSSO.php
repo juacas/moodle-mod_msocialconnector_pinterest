@@ -29,7 +29,7 @@ require_once('vendor/autoload.php');
 require_once("../../../../config.php");
 require_once('../../classes/msocialconnectorplugin.php');
 require_once('pinterestplugin.php');
-
+global $SESSION;
 if (isset($SESSION->msocialSSOid)) { // Callback from pinterest.
     $id = $SESSION->msocialSSOid;
     unset($SESSION->msocialSSOid);
