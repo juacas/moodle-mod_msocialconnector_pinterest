@@ -309,9 +309,11 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
         $kpiobjs['prpins'] = new kpi_info('prpins', get_string('kpi_description_prpins', 'msocialconnector_pinterest'),
                 kpi_info::KPI_INDIVIDUAL, kpi_info::KPI_CALCULATED, social_interaction::POST, '*',
                 social_interaction::DIRECTION_AUTHOR);
+// TODO: This KPI should be calculated from counts.comments
         $kpiobjs['prcomments'] = new kpi_info('prcomments', get_string('kpi_description_prcomments', 'msocialconnector_pinterest'),
                 kpi_info::KPI_INDIVIDUAL, kpi_info::KPI_CUSTOM, social_interaction::REPLY);
-        $kpiobjs['saves'] = new kpi_info('saves', get_string('kpi_description_saves', 'msocialconnector_pinterest'),
+// TODO: This PKI should be calculated from metadata counts.saves        
+$kpiobjs['saves'] = new kpi_info('saves', get_string('kpi_description_saves', 'msocialconnector_pinterest'),
                 kpi_info::KPI_INDIVIDUAL, kpi_info::KPI_CUSTOM, social_interaction::REACTION);
         $kpiobjs['max_prpins'] = new kpi_info('max_prpins', null, kpi_info::KPI_AGREGATED);
         $kpiobjs['max_prcomments'] = new kpi_info('max_prcomments', null, kpi_info::KPI_AGREGATED, kpi_info::KPI_CUSTOM);
