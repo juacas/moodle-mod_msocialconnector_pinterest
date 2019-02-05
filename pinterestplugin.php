@@ -26,7 +26,7 @@
 namespace mod_msocial\connector;
 
 use mod_msocial\kpi_info;
-use msocial\msocial_plugin;
+use mod_msocial\msocial_plugin;
 use mod_msocial\social_user;
 use DirkGroenen\Pinterest\Models\Board;
 use DirkGroenen\Pinterest\Models\Collection;
@@ -63,7 +63,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     /**
      *
      * {@inheritDoc}
-     * @see \msocial\msocial_plugin::can_harvest()
+     * @see \mod_msocial\msocial_plugin::can_harvest()
      */
     public function can_harvest() {
         if ($this->get_connection_token() == null) {
@@ -83,7 +83,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     /**
      * {@inheritdoc}
      *
-     * @see \msocial\msocial_plugin::calculate_kpis() */
+     * @see \mod_msocial\msocial_plugin::calculate_kpis() */
     public function calculate_kpis(users_struct $users, $kpis = []) {
         $kpis = parent::calculate_kpis($users, $kpis);
         foreach ($kpis as $kpi) {
@@ -136,7 +136,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     /**
      * {@inheritdoc}
      *
-     * @see \msocial\msocial_plugin::get_settings() */
+     * @see \mod_msocial\msocial_plugin::get_settings() */
     public function get_settings(\MoodleQuickForm $mform) {
         $formfieldname = $this->get_form_field_name(self::CONFIG_PRSEARCH);
         $mform->addElement('text', $formfieldname, get_string("search", "msocialconnector_pinterest"), array('size' => '20'));
@@ -147,7 +147,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     /**
      * {@inheritdoc}
      *
-     * @see \msocial\msocial_plugin::data_preprocessing() */
+     * @see \mod_msocial\msocial_plugin::data_preprocessing() */
     public function data_preprocessing(&$defaultvalues) {
         $defaultvalues[$this->get_form_field_name(self::CONFIG_PRSEARCH)] = $this->get_config(self::CONFIG_PRSEARCH);
         parent::data_preprocessing($defaultvalues);
@@ -156,7 +156,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     /**
      * {@inheritdoc}
      *
-     * @see \msocial\msocial_plugin::save_settings() */
+     * @see \mod_msocial\msocial_plugin::save_settings() */
     public function save_settings(\stdClass $data) {
         if (isset($data->{$this->get_form_field_name(self::CONFIG_PRSEARCH)})) {
             $this->set_config(self::CONFIG_PRSEARCH, $data->{$this->get_form_field_name(self::CONFIG_PRSEARCH)});
@@ -304,7 +304,7 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
     /**
      * {@inheritdoc}
      *
-     * @see \msocial\msocial_plugin::get_kpi_list() */
+     * @see \mod_msocial\msocial_plugin::get_kpi_list() */
     public function get_kpi_list() {
         $kpiobjs['prpins'] = new kpi_info('prpins', get_string('kpi_description_prpins', 'msocialconnector_pinterest'),
                 kpi_info::KPI_INDIVIDUAL, kpi_info::KPI_CALCULATED, social_interaction::POST, '*',
@@ -387,7 +387,7 @@ $kpiobjs['saves'] = new kpi_info('saves', get_string('kpi_description_saves', 'm
     /**
      *
      * {@inheritDoc}
-     * @see \msocial\msocial_plugin::reset_userdata()
+     * @see \mod_msocial\msocial_plugin::reset_userdata()
      */
     public function reset_userdata(\stdClass $data) {
         global $DB;
@@ -470,7 +470,7 @@ $kpiobjs['saves'] = new kpi_info('saves', get_string('kpi_description_saves', 'm
     /**
      *
      * {@inheritDoc}
-     * @see \msocial\msocial_plugin::preferred_harvest_intervals()
+     * @see \mod_msocial\msocial_plugin::preferred_harvest_intervals()
      */
     public function preferred_harvest_intervals() {
         return new harvest_intervals( 12 * 3600, 0, 0, 0);
