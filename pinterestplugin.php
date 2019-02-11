@@ -581,7 +581,8 @@ $kpiobjs['saves'] = new kpi_info('saves', get_string('kpi_description_saves', 'm
                 $result->messages[] = $message;
             }
         }
-
-        return $this->post_harvest($result);
+        $result->interactions = $this->lastinteractions;
+        
+        return $result;
     }
 }
