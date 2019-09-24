@@ -59,7 +59,9 @@ if ($action == 'connect') {
     $callbackurl = (new moodle_url("/mod/msocial/connector/pinterest/connectorSSO.php",
             array('action' => 'callback', 'type' => $type)))->out();
             // Store redirection params in session. Pinterest does not support params in callbackurl.
-            session_start();
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
             $SESSION->msocialSSOid = $id;
             $loginurl = $pr->auth->getLoginUrl($callbackurl);
             $loginurl = str_replace('&amp;', '&', $loginurl);
