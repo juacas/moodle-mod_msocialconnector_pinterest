@@ -138,10 +138,12 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      *
      * @see \mod_msocial\msocial_plugin::get_settings() */
     public function get_settings(\MoodleQuickForm $mform) {
-        $formfieldname = $this->get_form_field_name(self::CONFIG_PRSEARCH);
-        $mform->addElement('text', $formfieldname, get_string("search", "msocialconnector_pinterest"), array('size' => '20'));
-        $mform->setType($formfieldname, PARAM_TEXT);
-        $mform->addHelpButton($formfieldname, 'search', 'msocialconnector_pinterest');
+        if ($this->mode === msocial_connector_pinterest::MODE_USER) {
+            $formfieldname = $this->get_form_field_name(self::CONFIG_PRSEARCH);
+            $mform->addElement('text', $formfieldname, get_string("search", "msocialconnector_pinterest"), array('size' => '20'));
+            $mform->setType($formfieldname, PARAM_TEXT);
+            $mform->addHelpButton($formfieldname, 'search', 'msocialconnector_pinterest');
+        }
     }
 
     /**
@@ -149,7 +151,9 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      *
      * @see \mod_msocial\msocial_plugin::data_preprocessing() */
     public function data_preprocessing(&$defaultvalues) {
-        $defaultvalues[$this->get_form_field_name(self::CONFIG_PRSEARCH)] = $this->get_config(self::CONFIG_PRSEARCH);
+        if ($this->mode === msocial_connector_pinterest::MODE_USER) {
+            $defaultvalues[$this->get_form_field_name(self::CONFIG_PRSEARCH)] = $this->get_config(self::CONFIG_PRSEARCH);
+        }
         parent::data_preprocessing($defaultvalues);
     }
 
@@ -158,8 +162,9 @@ class msocial_connector_pinterest extends msocial_connector_plugin {
      *
      * @see \mod_msocial\msocial_plugin::save_settings() */
     public function save_settings(\stdClass $data) {
-        if (isset($data->{$this->get_form_field_name(self::CONFIG_PRSEARCH)})) {
-            $this->set_config(self::CONFIG_PRSEARCH, $data->{$this->get_form_field_name(self::CONFIG_PRSEARCH)});
+        if ($this->mode === msocial_connector_pinterest::MODE_USER &&
+            isset($data->{$this->get_form_field_name(self::CONFIG_PRSEARCH)})) {
+                $this->set_config(self::CONFIG_PRSEARCH, $data->{$this->get_form_field_name(self::CONFIG_PRSEARCH)});
         }
         return true;
     }
